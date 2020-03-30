@@ -53,10 +53,3 @@ class SalaryPipeline(object):
                 item['salary_max'] = 0
 
         return item
-
-
-class SitePipeline(object):
-    def process_item(self, item, spider):
-        item['site'] = re.findall(r'https:\/\/[A-Za-z/.]+\.ru', item['site'])[0]
-
-        return item
