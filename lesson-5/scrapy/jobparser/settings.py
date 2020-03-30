@@ -70,7 +70,6 @@ COOKIES_ENABLED = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'jobparser.pipelines.JobparserPipeline': 30,
-   'jobparser.pipelines.SitePipeline': 20,
    'jobparser.pipelines.SalaryPipeline': 10
 }
 
