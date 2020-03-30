@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.http import HtmlResponse
 from jobparser.items import JobparserItem
-
+from scrapy.loader import ItemLoader
 
 class SJruSpider(scrapy.Spider):
     name = 'SJru'
@@ -22,8 +22,9 @@ class SJruSpider(scrapy.Spider):
             yield response.follow(link, callback=self.vacansy_parse)
 
     def vacansy_parse(self, response: HtmlResponse):
-        name = response.xpath("//h1[@class='_3mfro rFbjy s1nFK _2JVkc']/text()").extract()[0]
-        salary = response.xpath("//span[@class='_3mfro _2Wp8I ZON4b PlM3e _2JVkc']/text()").extract()
-        vacansy_link = response.request.url
-        vacansy_site = response.request.url
-        yield JobparserItem(name=name, salary=salary, link=vacansy_link, site=vacansy_site)
+        loader = ItemLoader(item=JobparserItem(), response=response)
+        loader.add_xpath('name',"//h1[@class='_3mfro rFbjy s1nFK _2JVkc']/text()")
+        loader.add_xpath('salary', "//span[@class='_3mfro _2Wp8I ZON4b PlM3e _2JVkc']/text()")
+        loader.add_value('link',response.request.url)
+        loader.add_value('site', 'superjob.ru')
+        yield loader.load_item()
